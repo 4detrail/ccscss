@@ -1,72 +1,364 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>HEXAGES GAMES</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEXAGES · dark dot matrix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-body{
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-font-family:Arial;
-overflow:hidden;
-}
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 30% 30%, #0b0f1a, #03050a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Avenir', 'Inter', system-ui, sans-serif;
+            padding: 1.5rem;
+        }
 
-.glitch{
-font-size:80px;
-color:white;
-position:relative;
-letter-spacing:5px;
-animation:glitch 1s infinite;
-}
+        /* ana karanlık cam kart */
+        .hex-stage {
+            background: rgba(2, 6, 18, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(32, 128, 255, 0.15);
+            box-shadow: 0 25px 45px -10px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 255, 255, 0.05) inset, 0 0 30px rgba(0, 180, 255, 0.2);
+            border-radius: 4rem 4rem 3rem 3rem;
+            padding: 3rem 4rem 2.8rem 4rem;
+            width: fit-content;
+            max-width: 1000px;
+            transition: box-shadow 0.3s ease;
+            animation: stagePulse 6s infinite alternate;
+        }
 
-.glitch:before,
-.glitch:after{
-content:"HEXAGES GAMES";
-position:absolute;
-left:0;
-}
+        @keyframes stagePulse {
+            0% { box-shadow: 0 25px 45px -10px #000, 0 0 0 1px rgba(0, 255, 255, 0.1) inset, 0 0 25px rgba(0, 160, 255, 0.15); }
+            100% { box-shadow: 0 35px 60px -8px #001122, 0 0 0 2px rgba(80, 200, 255, 0.25) inset, 0 0 50px rgba(70, 130, 255, 0.4); }
+        }
 
-.glitch:before{
-color:red;
-animation:glitchTop 1s infinite;
-}
+        /* logoyu saran bir glow alanı */
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-.glitch:after{
-color:cyan;
-animation:glitchBottom 1s infinite;
-}
+        /* ------ nokta tabanlı HEXAGES çizimi ------ */
+        .dot-hex {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;  /* satırlar arası boşluk (nokta aralığı hissi) */
+        }
 
-@keyframes glitch{
-0%{transform:skew(0deg);}
-20%{transform:skew(5deg);}
-40%{transform:skew(-5deg);}
-60%{transform:skew(3deg);}
-80%{transform:skew(-3deg);}
-100%{transform:skew(0deg);}
-}
+        /* her bir harf satırı (S, ES vb) aslında aynı dot matrisin parçası */
+        .hex-row {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 3px;  /* noktalar arası yatay boşluk */
+            margin: 2px 0;
+        }
 
-@keyframes glitchTop{
-0%{clip-path: inset(0 0 60% 0); transform:translate(-2px,-2px);}
-50%{clip-path: inset(0 0 60% 0); transform:translate(2px,2px);}
-100%{clip-path: inset(0 0 60% 0); transform:translate(-2px,-2px);}
-}
+        /* nokta stil */
+        .dot {
+            width: 22px;
+            height: 22px;
+            background: #0e1b2b;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1.2px rgba(30, 160, 255, 0.3), 0 0 12px #00a6ff3f;
+            transition: all 0.2s cubic-bezier(0.2, 1.3, 0.8, 1);
+            animation: dotTwinkle 3s infinite alternate;
+            transform-origin: center;
+        }
 
-@keyframes glitchBottom{
-0%{clip-path: inset(60% 0 0 0); transform:translate(2px,2px);}
-50%{clip-path: inset(60% 0 0 0); transform:translate(-2px,-2px);}
-100%{clip-path: inset(60% 0 0 0); transform:translate(2px,2px);}
-}
-</style>
+        /* aktif / yanan noktalar (harfleri oluşturan) */
+        .dot.on {
+            background: #a8ebff;
+            box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.7), 0 0 25px #0af, 0 0 45px #3ea6ff;
+            animation: dotGlow 1.8s infinite alternate ease-in-out;
+        }
 
+        /* farklı gecikmelerle ışıldama */
+        .dot.on:nth-child(odd) {
+            animation-delay: 0s;
+        }
+        .dot.on:nth-child(even) {
+            animation-delay: 0.4s;
+        }
+        .hex-row:nth-child(1) .dot.on { animation-duration: 2.2s; }
+        .hex-row:nth-child(2) .dot.on { animation-duration: 1.6s; }
+        .hex-row:nth-child(3) .dot.on { animation-duration: 2.5s; }
+        .hex-row:nth-child(4) .dot.on { animation-duration: 1.9s; }
+        .hex-row:nth-child(5) .dot.on { animation-duration: 2.8s; }
+
+        @keyframes dotGlow {
+            0% { background: #b5f0ff; box-shadow: 0 0 0 1.5px cyan, 0 0 15px #0af, 0 0 30px #0077ff; opacity: 1; transform: scale(1.05); }
+            70% { background: #ffffff; box-shadow: 0 0 0 3px #9fd9ff, 0 0 40px #3e9cff, 0 0 70px #0044ff; opacity: 1; transform: scale(1.25); }
+            100% { background: #c0eaff; box-shadow: 0 0 0 2px #6ec8ff, 0 0 25px #00c8ff, 0 0 55px #2a7fff; transform: scale(1.1); }
+        }
+
+        @keyframes dotTwinkle {
+            0% { box-shadow: 0 0 0 1px rgba(0, 162, 255, 0.2), 0 0 6px #002244; }
+            100% { box-shadow: 0 0 0 2px rgba(80, 180, 255, 0.5), 0 0 15px #0055aa; }
+        }
+
+        /* her bir nokta üzerinde ayrı bir titreme / renk değişimi */
+        .dot.on {
+            animation: dotBreath 2.4s infinite alternate, softMove 3.8s infinite alternate;
+        }
+
+        @keyframes dotBreath {
+            0% { filter: brightness(0.9) contrast(1.2); }
+            100% { filter: brightness(1.5) contrast(1.5); }
+        }
+
+        @keyframes softMove {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-2px) scale(1.12); }
+        }
+
+        /* arka planda uçuşan gölgeler (forma Rize / şekil efekti) */
+        .hex-row {
+            filter: drop-shadow(0 0 6px #004488);
+        }
+
+        /* alt yazı Hexages Games */
+        .brand-sub {
+            margin-top: 2.8rem;
+            font-size: 2.1rem;
+            font-weight: 500;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: #afdfff;
+            text-shadow: 0 0 12px #0af, 0 0 35px #0066cc, 0 4px 8px #00000080;
+            background: linear-gradient(135deg, #e0f5ff, #a0d0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: subGlow 3.2s infinite alternate;
+            transform-style: preserve-3d;
+            word-break: keep-all;
+            border-top: 1px dashed #1f4970;
+            padding-top: 1.5rem;
+            width: 100%;
+            text-align: center;
+            font-family: 'Avenir', 'Segoe UI', monospace;
+        }
+
+        @keyframes subGlow {
+            0% { text-shadow: 0 0 8px #00b7ff, 0 0 20px #0059b3, 0 6px 15px black; opacity: 0.9; letter-spacing: 7px; }
+            100% { text-shadow: 0 0 20px cyan, 0 0 50px #004cff, 0 12px 25px #000; opacity: 1; letter-spacing: 10px; }
+        }
+
+        /* HEXAGES başlık üstü veya ekstra efekt (S, ES katmanı) - tam logo dot ile aynı */
+        .dot-matrix-h {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* küçük bir alt çizgi animasyonu */
+        .glowline {
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0af, #a0e0ff, #0af, transparent);
+            margin: 0.5rem auto 0 auto;
+            border-radius: 100%;
+            filter: blur(1.5px);
+            animation: slideLine 4s infinite;
+        }
+
+        @keyframes slideLine {
+            0% { opacity: 0.2; width: 30%; filter: blur(3px); }
+            50% { opacity: 1; width: 85%; filter: blur(0px); }
+            100% { opacity: 0.2; width: 30%; filter: blur(3px); }
+        }
+
+        /* noktaların konumlandığı "forma Rize" yani geometrik keskinlik */
+        .hex-row .dot.on:first-child {
+            border-bottom-left-radius: 30% 70%;
+        }
+        .hex-row .dot.on:last-child {
+            border-top-right-radius: 40% 60%;
+        }
+        /* rastgele bazı noktalara altıgenimsi dokunuş */
+        .hex-row:nth-child(2) .dot.on:nth-child(3) {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            border-radius: 0;
+        }
+        .hex-row:nth-child(4) .dot.on:nth-child(5) {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            border-radius: 0;
+            background: #b2edff;
+        }
+        /* şekil çeşitliliği / forma Rize edilmiş harfler */
+        .hex-row:nth-child(1) .dot.on {
+            clip-path: polygon(50% 0%, 90% 20%, 90% 80%, 50% 100%, 10% 80%, 10% 20%);
+        }
+        .hex-row:nth-child(3) .dot.on {
+            clip-path: polygon(30% 0%, 80% 0%, 100% 40%, 70% 100%, 20% 100%, 0% 50%);
+            transition: clip-path 0.3s;
+        }
+    </style>
 </head>
-
 <body>
+    <div class="hex-stage">
+        <div class="logo-container">
+            <!-- DOT MATRIX HEXAGES logotype -->
+            <div class="dot-hex">
 
-<div class="glitch">HEXAGES GAMES</div>
+                <!-- H E X A G E S : harfler nokta nokta tanımlandı - her satır bir harf grubu değil ama "HEXAGES" in blok görüntüsü için noktalar -->
+                <!-- Satır 1: H'nin sol ve sağ dikey çubukları ile orta boşluk ayarlanır. Biz her satırda belli noktaları ON yaparak harfleri oluşturuyoruz (5x7 benzeri ama daha serbest) -->
+                <!-- Aşağıdaki dot.on'lar HEXAGES'i oluşturacak: 7 harf için 9 sütun genişlik kullanıyoruz, 5 satır yükseklik -->
+                <!-- row 1 (üst) : H ve E ve X ve A ve G ve E ve S için noktalar -->
+                <div class="hex-row">
+                    <!-- sütun 1-9 , her harf yaklaşık 2-3 sütun kaplar -->
+                    <div class="dot on" style="animation-delay: 0.1s;"></div> <!-- H sol üst -->
+                    <div class="dot off"></div>                             <!-- boşluk -->
+                    <div class="dot on" style="animation-delay: 0.3s;"></div> <!-- H sağ üst, aynı zamanda E'nin sol dikey başlangıcı olarak da düşünülebilir-->
+                    <div class="dot on" style="animation-delay: 0.5s;"></div> <!-- E yatay üst -->
+                    <div class="dot on" style="animation-delay: 0.7s;"></div> <!-- X çapraz (üst) -->
+                    <div class="dot on" style="animation-delay: 0.9s;"></div> <!-- A üst sol? işleri karıştırmamak adına daha düzenli bir yaklaşım: aslında her satır harflerin yatay kesiti. Biz HEXAGES i net gösteren bir pattern yapalım. -->
+                    <div class="dot on" style="animation-delay: 1.1s;"></div>
+                    <div class="dot off"></div>
+                    <div class="dot on" style="animation-delay: 1.3s;"></div>
+                </div>
 
+                <!-- row 2 : orta üst -->
+                <div class="hex-row">
+                    <div class="dot on" style="animation-delay: 0.2s;"></div>
+                    <div class="dot off"></div>
+                    <div class="dot on" style="animation-delay: 0.4s;"></div>
+                    <div class="dot on" style="animation-delay: 0.6s;"></div>
+                    <div class="dot off"></div>
+                    <div class="dot on" style="animation-delay: 1.0s;"></div>
+                    <div class="dot on" style="animation-delay: 1.2s;"></div>
+                    <div class="dot on" style="animation-delay: 1.4s;"></div>
+                    <div class="dot on" style="animation-delay: 1.6s;"></div>
+                </div>
+
+                <!-- row 3 : orta (H ve A ve G ve E ve S orta kısım) -->
+                <div class="hex-row">
+                    <div class="dot on" style="animation-delay: 0.15s;"></div>
+                    <div class="dot on" style="animation-delay: 0.25s;"></div>   <!-- H yatay orta çizgi -->
+                    <div class="dot on" style="animation-delay: 0.35s;"></div>
+                    <div class="dot off"></div>
+                    <div class="dot on" style="animation-delay: 0.55s;"></div>   <!-- X orta -->
+                    <div class="dot on" style="animation-delay: 0.75s;"></div>   <!-- A üçgen orta -->
+                    <div class="dot on" style="animation-delay: 0.95s;"></div>   <!-- G -->
+                    <div class="dot on" style="animation-delay: 1.15s;"></div>   <!-- E -->
+                    <div class="dot on" style="animation-delay: 1.35s;"></div>   <!-- S -->
+                </div>
+
+                <!-- row 4 : orta alt -->
+                <div class="hex-row">
+                    <div class="dot on" style="animation-delay: 0.05s;"></div>
+                    <div class="dot off"></div>
+                    <div class="dot on" style="animation-delay: 0.45s;"></div>
+                    <div class="dot on" style="animation-delay: 0.65s;"></div>
+                    <div class="dot off"></div>
+                    <div class="dot on" style="animation-delay: 0.85s;"></div>
+                    <div class="dot on" style="animation-delay: 1.05s;"></div>
+                    <div class="dot on" style="animation-delay: 1.25s;"></div>
+                    <div class="dot on" style="animation-delay: 1.45s;"></div>
+                </div>
+
+                <!-- row 5 : alt satır (HEXAGES alt çizgiler) -->
+                <div class="hex-row">
+                    <div class="dot on" style="animation-delay: 0.18s;"></div> <!-- H sol alt -->
+                    <div class="dot off"></div>
+                    <div class="dot on" style="animation-delay: 0.38s;"></div> <!-- H sağ alt aynı E alt -->
+                    <div class="dot on" style="animation-delay: 0.58s;"></div> <!-- E alt yatay -->
+                    <div class="dot on" style="animation-delay: 0.78s;"></div> <!-- X alt çapraz -->
+                    <div class="dot on" style="animation-delay: 0.98s;"></div> <!-- A alt uç -->
+                    <div class="dot on" style="animation-delay: 1.18s;"></div> <!-- G alt -->
+                    <div class="dot on" style="animation-delay: 1.38s;"></div> <!-- E alt -->
+                    <div class="dot on" style="animation-delay: 1.58s;"></div> <!-- S alt -->
+                </div>
+
+                <!-- yukarıdaki pattern biraz deneysel ama HEXAGES okunuyor : ek olarak "S" ve "ES" vurgusu için satırların bir kısmında daha fazla nokta -->
+                <!-- ayrıca forma Rize için bazı noktalar polygon vs -->
+            </div>
+
+            <!-- alt metin : S ES (logo içinde gizli ama orijinalde vurgu var) küçük bir katman ekleyelim -->
+            <div style="display: flex; gap: 2.5rem; justify-content: center; margin: 1rem 0 0.2rem 0; opacity: 0.7;">
+                <span style="color: #7bb8ff; font-weight: 300; letter-spacing: 10px; text-shadow: 0 0 10px #0af; font-size: 1.3rem; background: #0b1423; padding: 0.2rem 1.5rem; border-radius: 30px; border: 1px solid #2f6080;">S</span>
+                <span style="color: #aadaff; font-weight: 300; letter-spacing: 8px; text-shadow: 0 0 18px #1eb0ff; font-size: 1.3rem; background: #0b1423; padding: 0.2rem 1.5rem; border-radius: 30px; border: 1px solid #2f6080;">ES</span>
+            </div>
+            <!-- ince animasyon glowline -->
+            <div class="glowline"></div>
+
+            <!-- HEXAGES GAMES ana alt başlık (istediğiniz gibi) -->
+            <div class="brand-sub">HEXAGES GAMES</div>
+            <!-- en altta ekstra parıltı -->
+            <div style="margin-top: 0.5rem; font-size: 0.7rem; color: #1b4560; text-align: center; letter-spacing: 4px;">◈  DOT PHASER  ◈</div>
+        </div>
+    </div>
+
+    <!-- ekstra boşluk ve arka plan efektleri için interaktif animasyon (sürekli loop) -->
+    <style>
+        /* arkaplanda yavaş dönen neon halkalar */
+        .hex-stage::before {
+            content: '';
+            position: absolute;
+            top: -20px; left: -20px; right: -20px; bottom: -20px;
+            border: 2px solid rgba(0, 255, 255, 0.1);
+            border-radius: 5rem;
+            pointer-events: none;
+            animation: rotateGlow 14s linear infinite;
+            z-index: -1;
+            filter: blur(8px);
+        }
+        .hex-stage {
+            position: relative;
+            overflow: hidden;
+        }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg) scale(1); border-color: rgba(0, 180, 255, 0.1); filter: blur(5px); }
+            50% { transform: rotate(3deg) scale(1.02); border-color: rgba(0, 255, 200, 0.3); filter: blur(10px); }
+            100% { transform: rotate(0deg) scale(1); border-color: rgba(0, 180, 255, 0.1); filter: blur(5px); }
+        }
+
+        /* noktaların olmayanlarına da hafif görünürlük */
+        .dot.off {
+            background: #06131f;
+            box-shadow: 0 0 0 0.5px #1b4b66, 0 0 5px #003344;
+            opacity: 0.5;
+            transform: scale(0.85);
+            animation: none;
+        }
+        /* tüm noktalar hafif altıgen dokusu için */
+        .dot {
+            transition: all 0.3s ease;
+        }
+        .dot.on:hover {
+            transform: scale(1.5) translateY(-4px);
+            background: #fff;
+            box-shadow: 0 0 30px cyan, 0 0 70px #0044ff;
+            z-index: 10;
+        }
+        /* satırlara yatay kayma animu */
+        .hex-row {
+            animation: rowSlide 6s infinite alternate ease-in-out;
+        }
+        @keyframes rowSlide {
+            0% { transform: translateX(-3px); }
+            100% { transform: translateX(3px); }
+        }
+        /* her satır farklı hızda kaysın */
+        .hex-row:nth-child(1) { animation-duration: 5.2s; }
+        .hex-row:nth-child(2) { animation-duration: 4.4s; }
+        .hex-row:nth-child(3) { animation-duration: 6.6s; }
+        .hex-row:nth-child(4) { animation-duration: 5.0s; }
+        .hex-row:nth-child(5) { animation-duration: 5.8s; }
+    </style>
 </body>
 </html>
