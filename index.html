@@ -1,364 +1,1455 @@
+4…
+4…
+Çevrim içi
+
+Shadow [FαЫe],  — 4.03.2026 22:20
+Unuttun sanırım atar mısın
+4… [LVN],  — 5.03.2026 18:16
+oke
+Shadow [FαЫe],  — 5.03.2026 18:16
+tamam
+4… [LVN],  — 5.03.2026 18:29
+knk suan kayıt alırken acayip kayıyor sdese gel görüntü açayım ama pek konusamam sden konuş ben duyarım okeymi
+Shadow [FαЫe],  — 5.03.2026 18:30
+tamam
+Shadow [FαЫe],  — 8.03.2026 02:31
+Görsel
+Görsel
+4… [LVN],  — 8.03.2026 15:01
+symbiot
+Shadow [FαЫe],  — 8.03.2026 15:08
+benzer
+4… [LVN],  — 11.03.2026 23:40
+Knk benim dersler baya yoğun bu arada bana acil modeli lazım model yaptıktan sonra rigleme kemikleme yaparımda yada bu kollların yerine kollardan bağımsız bir silahmı yapsak benim hazır el modellerimiz var ne dersin ha bu arada hikayeyi tamamladınmı?
+Shadow [FαЫe],  — dün 00:00
+ÇOK AZ KALDI
+4… [LVN],  — dün 00:09
+Haber et bana
+Shadow [FαЫe],  — dün 00:09
+Tamam
+Kanka istersen şey yapabiliriz senin derslerin yoğunluğu azalınca yapabiliriz ben o zamana kadar hikayeyi çok güçlendiririm hatta belki ikinci oyunu bile planlamaya başlayabilirim
+Senin derslerinin yoğunluğu azalsın daha iyi yaparız hem oyunu
+4… [LVN],  — dün 06:06
+Oke ben yarın boş vaktinde bir hikaye örneği yazarım üstüne eklersin
+Shadow [FαЫe],  — dün 17:15
+Tamam
+Ama hikaye bitmek üzere
+Shadow [FαЫe],  — dün 21:06
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEXAGES · dark dot matrix</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space FPS Lite+ Mobility Update</title>... (4 KB kaldı)
 
-        body {
-            min-height: 100vh;
-            background: radial-gradient(circle at 30% 30%, #0b0f1a, #03050a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', 'Avenir', 'Inter', system-ui, sans-serif;
-            padding: 1.5rem;
-        }
+space_fps_lite_prototype.html
+54 KB
+şimdilik bu oyunla idare et
+ben daha önce yapmıştım
+﻿
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space FPS Lite+ Mobility Update</title>
+  <style>
+    :root {
+      --bg1: #050816;
+      --bg2: #132b59;
+      --panel: rgba(7, 14, 30, 0.66);
+      --panel-border: rgba(159, 231, 255, 0.16);
+      --text: #edfaff;
+      --hud: #9fe7ff;
+      --accent: #51f3ff;
+      --accent-soft: #8dffae;
+      --warn: #ffd966;
+      --danger: #ff6d6d;
+    }
 
-        /* ana karanlık cam kart */
-        .hex-stage {
-            background: rgba(2, 6, 18, 0.75);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(32, 128, 255, 0.15);
-            box-shadow: 0 25px 45px -10px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 255, 255, 0.05) inset, 0 0 30px rgba(0, 180, 255, 0.2);
-            border-radius: 4rem 4rem 3rem 3rem;
-            padding: 3rem 4rem 2.8rem 4rem;
-            width: fit-content;
-            max-width: 1000px;
-            transition: box-shadow 0.3s ease;
-            animation: stagePulse 6s infinite alternate;
-        }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #17397a 0%, #081122 48%, #02040a 100%);
+      color: var(--text);
+      overflow: hidden;
+    }
 
-        @keyframes stagePulse {
-            0% { box-shadow: 0 25px 45px -10px #000, 0 0 0 1px rgba(0, 255, 255, 0.1) inset, 0 0 25px rgba(0, 160, 255, 0.15); }
-            100% { box-shadow: 0 35px 60px -8px #001122, 0 0 0 2px rgba(80, 200, 255, 0.25) inset, 0 0 50px rgba(70, 130, 255, 0.4); }
-        }
+    #wrap { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+    canvas { width: 100%; height: 100%; display: block; cursor: none; }
 
-        /* logoyu saran bir glow alanı */
-        .logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+    .hud { position: absolute; inset: 0; pointer-events: none; }
 
-        /* ------ nokta tabanlı HEXAGES çizimi ------ */
-        .dot-hex {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;  /* satırlar arası boşluk (nokta aralığı hissi) */
-        }
+    .topbar {
+      position: absolute; top: 14px; left: 14px; right: 14px;
+      display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 12px;
+    }
 
-        /* her bir harf satırı (S, ES vb) aslında aynı dot matrisin parçası */
-        .hex-row {
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: center;
-            gap: 3px;  /* noktalar arası yatay boşluk */
-            margin: 2px 0;
-        }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 10px 14px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+      color: var(--hud);
+      text-shadow: 0 0 12px rgba(81, 243, 255, 0.22);
+      font-weight: 700;
+      min-height: 66px;
+    }
 
-        /* nokta stil */
-        .dot {
-            width: 22px;
-            height: 22px;
-            background: #0e1b2b;
-            border-radius: 50%;
-            box-shadow: 0 0 0 1.2px rgba(30, 160, 255, 0.3), 0 0 12px #00a6ff3f;
-            transition: all 0.2s cubic-bezier(0.2, 1.3, 0.8, 1);
-            animation: dotTwinkle 3s infinite alternate;
-            transform-origin: center;
-        }
+    .bars {
+      position: absolute; top: 94px; left: 14px; right: 14px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    }
 
-        /* aktif / yanan noktalar (harfleri oluşturan) */
-        .dot.on {
-            background: #a8ebff;
-            box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.7), 0 0 25px #0af, 0 0 45px #3ea6ff;
-            animation: dotGlow 1.8s infinite alternate ease-in-out;
-        }
+    .barCard {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 10px 12px;
+      backdrop-filter: blur(5px);
+    }
 
-        /* farklı gecikmelerle ışıldama */
-        .dot.on:nth-child(odd) {
-            animation-delay: 0s;
-        }
-        .dot.on:nth-child(even) {
-            animation-delay: 0.4s;
-        }
-        .hex-row:nth-child(1) .dot.on { animation-duration: 2.2s; }
-        .hex-row:nth-child(2) .dot.on { animation-duration: 1.6s; }
-        .hex-row:nth-child(3) .dot.on { animation-duration: 2.5s; }
-        .hex-row:nth-child(4) .dot.on { animation-duration: 1.9s; }
-        .hex-row:nth-child(5) .dot.on { animation-duration: 2.8s; }
+    .barHead {
+      display: flex; justify-content: space-between; margin-bottom: 8px;
+      color: #dff7ff; font-size: 13px; font-weight: 800; letter-spacing: 0.3px;
+    }
 
-        @keyframes dotGlow {
-            0% { background: #b5f0ff; box-shadow: 0 0 0 1.5px cyan, 0 0 15px #0af, 0 0 30px #0077ff; opacity: 1; transform: scale(1.05); }
-            70% { background: #ffffff; box-shadow: 0 0 0 3px #9fd9ff, 0 0 40px #3e9cff, 0 0 70px #0044ff; opacity: 1; transform: scale(1.25); }
-            100% { background: #c0eaff; box-shadow: 0 0 0 2px #6ec8ff, 0 0 25px #00c8ff, 0 0 55px #2a7fff; transform: scale(1.1); }
-        }
+    .barTrack {
+      height: 12px; border-radius: 999px; background: rgba(255,255,255,0.08);
+      overflow: hidden; border: 1px solid rgba(255,255,255,0.06);
+    }
 
-        @keyframes dotTwinkle {
-            0% { box-shadow: 0 0 0 1px rgba(0, 162, 255, 0.2), 0 0 6px #002244; }
-            100% { box-shadow: 0 0 0 2px rgba(80, 180, 255, 0.5), 0 0 15px #0055aa; }
-        }
+    .barFill {
+      height: 100%; width: 100%; border-radius: 999px; transition: width .16s linear;
+    }
 
-        /* her bir nokta üzerinde ayrı bir titreme / renk değişimi */
-        .dot.on {
-            animation: dotBreath 2.4s infinite alternate, softMove 3.8s infinite alternate;
-        }
+    #healthBar { background: linear-gradient(90deg, #ff7d7d, #ff5d7a); }
+    #energyBar { background: linear-gradient(90deg, #7dd7ff, #51f3ff); }
+    #ammoBar { background: linear-gradient(90deg, #ffd966, #ffb05d); }
+    #progressBar { background: linear-gradient(90deg, #8dffae, #51f3ff); }
+    #bossBar { background: linear-gradient(90deg, #ffb05d, #ff5d7a); }
 
-        @keyframes dotBreath {
-            0% { filter: brightness(0.9) contrast(1.2); }
-            100% { filter: brightness(1.5) contrast(1.5); }
-        }
+    #bossWrap {
+      position: absolute; top: 160px; left: 50%; transform: translateX(-50%);
+      width: min(760px, calc(100vw - 28px));
+      background: rgba(24, 8, 18, 0.74);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 10px 12px; backdrop-filter: blur(5px);
+      display: none; pointer-events: none;
+    }
 
-        @keyframes softMove {
-            0% { transform: translateY(0px) scale(1); }
-            100% { transform: translateY(-2px) scale(1.12); }
-        }
+    #sectionBanner {
+      position: absolute; top: 208px; left: 50%; transform: translateX(-50%);
+      padding: 11px 16px; border-radius: 999px;
+      background: rgba(81,243,255,0.12);
+      border: 1px solid rgba(159,231,255,0.24);
+      font-weight: 800; letter-spacing: 0.4px; opacity: 0;
+      transition: opacity .25s ease; pointer-events: none;
+    }
 
-        /* arka planda uçuşan gölgeler (forma Rize / şekil efekti) */
-        .hex-row {
-            filter: drop-shadow(0 0 6px #004488);
-        }
+    .bottomHelp, .rightInfo, #musicBtn { pointer-events: auto; }
 
-        /* alt yazı Hexages Games */
-        .brand-sub {
-            margin-top: 2.8rem;
-            font-size: 2.1rem;
-            font-weight: 500;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            color: #afdfff;
-            text-shadow: 0 0 12px #0af, 0 0 35px #0066cc, 0 4px 8px #00000080;
-            background: linear-gradient(135deg, #e0f5ff, #a0d0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: subGlow 3.2s infinite alternate;
-            transform-style: preserve-3d;
-            word-break: keep-all;
-            border-top: 1px dashed #1f4970;
-            padding-top: 1.5rem;
-            width: 100%;
-            text-align: center;
-            font-family: 'Avenir', 'Segoe UI', monospace;
-        }
+    .bottomHelp {
+      position: absolute; left: 14px; bottom: 14px; max-width: 690px;
+      padding: 12px 14px; line-height: 1.5; background: var(--panel);
+      border: 1px solid var(--panel-border); border-radius: 16px;
+      color: #dff7ff; font-size: 14px;
+    }
 
-        @keyframes subGlow {
-            0% { text-shadow: 0 0 8px #00b7ff, 0 0 20px #0059b3, 0 6px 15px black; opacity: 0.9; letter-spacing: 7px; }
-            100% { text-shadow: 0 0 20px cyan, 0 0 50px #004cff, 0 12px 25px #000; opacity: 1; letter-spacing: 10px; }
-        }
+    .rightInfo {
+      position: absolute; right: 14px; bottom: 14px; width: 330px;
+      padding: 12px 14px; line-height: 1.45; background: var(--panel);
+      border: 1px solid var(--panel-border); border-radius: 16px;
+      color: #dff7ff; font-size: 13px;
+    }
 
-        /* HEXAGES başlık üstü veya ekstra efekt (S, ES katmanı) - tam logo dot ile aynı */
-        .dot-matrix-h {
+    #musicBtn {
+      position: absolute; right: 14px; top: 222px;
+      padding: 10px 14px; border: none; border-radius: 12px;
+      background: rgba(16, 48, 78, 0.9); color: white; font-weight: 800;
+      cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    }
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .overlay {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.38); pointer-events: auto;
+    }
 
-        /* küçük bir alt çizgi animasyonu */
-        .glowline {
-            width: 70%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #0af, #a0e0ff, #0af, transparent);
-            margin: 0.5rem auto 0 auto;
-            border-radius: 100%;
-            filter: blur(1.5px);
-            animation: slideLine 4s infinite;
-        }
+    .card {
+      width: min(860px, calc(100vw - 26px)); border-radius: 24px; padding: 24px 26px;
+      background: rgba(6, 12, 26, 0.84); border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.28); text-align: center;
+    }
 
-        @keyframes slideLine {
-            0% { opacity: 0.2; width: 30%; filter: blur(3px); }
-            50% { opacity: 1; width: 85%; filter: blur(0px); }
-            100% { opacity: 0.2; width: 30%; filter: blur(3px); }
-        }
+    .card h1 { margin: 0 0 8px; font-size: 34px; color: var(--accent); letter-spacing: 0.4px; }
+    .subtitle { margin: 0 0 16px; color: #d9f7ff; line-height: 1.5; font-size: 15px; }
 
-        /* noktaların konumlandığı "forma Rize" yani geometrik keskinlik */
-        .hex-row .dot.on:first-child {
-            border-bottom-left-radius: 30% 70%;
-        }
-        .hex-row .dot.on:last-child {
-            border-top-right-radius: 40% 60%;
-        }
-        /* rastgele bazı noktalara altıgenimsi dokunuş */
-        .hex-row:nth-child(2) .dot.on:nth-child(3) {
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            border-radius: 0;
-        }
-        .hex-row:nth-child(4) .dot.on:nth-child(5) {
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            border-radius: 0;
-            background: #b2edff;
-        }
-        /* şekil çeşitliliği / forma Rize edilmiş harfler */
-        .hex-row:nth-child(1) .dot.on {
-            clip-path: polygon(50% 0%, 90% 20%, 90% 80%, 50% 100%, 10% 80%, 10% 20%);
-        }
-        .hex-row:nth-child(3) .dot.on {
-            clip-path: polygon(30% 0%, 80% 0%, 100% 40%, 70% 100%, 20% 100%, 0% 50%);
-            transition: clip-path 0.3s;
-        }
-    </style>
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; text-align: left; }
+    .box {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; padding: 14px;
+    }
+    .box h3 { margin: 0 0 10px; color: var(--accent-soft); font-size: 16px; }
+
+    .buttonRow { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+    button, .pickBtn {
+      padding: 12px 16px; border: none; border-radius: 12px; font-size: 15px;
+      font-weight: 800; cursor: pointer; transition: transform .12s ease, filter .12s ease, outline .12s ease;
+    }
+
+    button:hover, .pickBtn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+    .primary { background: var(--accent); color: #021118; }
+    .secondary { background: #16365f; color: white; }
+    .pickBtn { background: #16365f; color: white; min-width: 118px; }
+    .difficultyBtn[data-difficulty="easy"] { background: #1b5b3c; }
+    .difficultyBtn[data-difficulty="normal"] { background: #16456f; }
+    .difficultyBtn[data-difficulty="hard"] { background: #7f4a20; }
+    .selected { outline: 3px solid white; transform: scale(1.03); }
+
+    .small { color: #cceeff; font-size: 13px; line-height: 1.45; margin-top: 10px; }
+    .statusLine { margin-top: 10px; color: #e6fbff; font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .topbar, .bars, .grid2 { grid-template-columns: 1fr; }
+      .rightInfo { width: min(330px, calc(100vw - 28px)); }
+      #musicBtn { top: auto; bottom: 190px; }
+      #bossWrap { top: 240px; }
+      #sectionBanner { top: 290px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="hex-stage">
-        <div class="logo-container">
-            <!-- DOT MATRIX HEXAGES logotype -->
-            <div class="dot-hex">
+  <div id="wrap">
+    <canvas id="game"></canvas>
 
-                <!-- H E X A G E S : harfler nokta nokta tanımlandı - her satır bir harf grubu değil ama "HEXAGES" in blok görüntüsü için noktalar -->
-                <!-- Satır 1: H'nin sol ve sağ dikey çubukları ile orta boşluk ayarlanır. Biz her satırda belli noktaları ON yaparak harfleri oluşturuyoruz (5x7 benzeri ama daha serbest) -->
-                <!-- Aşağıdaki dot.on'lar HEXAGES'i oluşturacak: 7 harf için 9 sütun genişlik kullanıyoruz, 5 satır yükseklik -->
-                <!-- row 1 (üst) : H ve E ve X ve A ve G ve E ve S için noktalar -->
-                <div class="hex-row">
-                    <!-- sütun 1-9 , her harf yaklaşık 2-3 sütun kaplar -->
-                    <div class="dot on" style="animation-delay: 0.1s;"></div> <!-- H sol üst -->
-                    <div class="dot off"></div>                             <!-- boşluk -->
-                    <div class="dot on" style="animation-delay: 0.3s;"></div> <!-- H sağ üst, aynı zamanda E'nin sol dikey başlangıcı olarak da düşünülebilir-->
-                    <div class="dot on" style="animation-delay: 0.5s;"></div> <!-- E yatay üst -->
-                    <div class="dot on" style="animation-delay: 0.7s;"></div> <!-- X çapraz (üst) -->
-                    <div class="dot on" style="animation-delay: 0.9s;"></div> <!-- A üst sol? işleri karıştırmamak adına daha düzenli bir yaklaşım: aslında her satır harflerin yatay kesiti. Biz HEXAGES i net gösteren bir pattern yapalım. -->
-                    <div class="dot on" style="animation-delay: 1.1s;"></div>
-                    <div class="dot off"></div>
-                    <div class="dot on" style="animation-delay: 1.3s;"></div>
-                </div>
+    <div class="hud">
+      <div class="topbar">
+        <div class="panel" id="leftStats">SKOR: 0<br>SEKTÖR: 1</div>
+        <div class="panel" id="middleStats">SİLAH: Pulse Blaster<br>ZORLUK: Kolay</div>
+        <div class="panel" id="rightStats">EN İYİ: 0<br>DÜŞMAN: 0</div>
+        <div class="panel" id="moveStats">HAREKET: WASD<br>KALKAN YOK</div>
+      </div>
 
-                <!-- row 2 : orta üst -->
-                <div class="hex-row">
-                    <div class="dot on" style="animation-delay: 0.2s;"></div>
-                    <div class="dot off"></div>
-                    <div class="dot on" style="animation-delay: 0.4s;"></div>
-                    <div class="dot on" style="animation-delay: 0.6s;"></div>
-                    <div class="dot off"></div>
-                    <div class="dot on" style="animation-delay: 1.0s;"></div>
-                    <div class="dot on" style="animation-delay: 1.2s;"></div>
-                    <div class="dot on" style="animation-delay: 1.4s;"></div>
-                    <div class="dot on" style="animation-delay: 1.6s;"></div>
-                </div>
-
-                <!-- row 3 : orta (H ve A ve G ve E ve S orta kısım) -->
-                <div class="hex-row">
-                    <div class="dot on" style="animation-delay: 0.15s;"></div>
-                    <div class="dot on" style="animation-delay: 0.25s;"></div>   <!-- H yatay orta çizgi -->
-                    <div class="dot on" style="animation-delay: 0.35s;"></div>
-                    <div class="dot off"></div>
-                    <div class="dot on" style="animation-delay: 0.55s;"></div>   <!-- X orta -->
-                    <div class="dot on" style="animation-delay: 0.75s;"></div>   <!-- A üçgen orta -->
-                    <div class="dot on" style="animation-delay: 0.95s;"></div>   <!-- G -->
-                    <div class="dot on" style="animation-delay: 1.15s;"></div>   <!-- E -->
-                    <div class="dot on" style="animation-delay: 1.35s;"></div>   <!-- S -->
-                </div>
-
-                <!-- row 4 : orta alt -->
-                <div class="hex-row">
-                    <div class="dot on" style="animation-delay: 0.05s;"></div>
-                    <div class="dot off"></div>
-                    <div class="dot on" style="animation-delay: 0.45s;"></div>
-                    <div class="dot on" style="animation-delay: 0.65s;"></div>
-                    <div class="dot off"></div>
-                    <div class="dot on" style="animation-delay: 0.85s;"></div>
-                    <div class="dot on" style="animation-delay: 1.05s;"></div>
-                    <div class="dot on" style="animation-delay: 1.25s;"></div>
-                    <div class="dot on" style="animation-delay: 1.45s;"></div>
-                </div>
-
-                <!-- row 5 : alt satır (HEXAGES alt çizgiler) -->
-                <div class="hex-row">
-                    <div class="dot on" style="animation-delay: 0.18s;"></div> <!-- H sol alt -->
-                    <div class="dot off"></div>
-                    <div class="dot on" style="animation-delay: 0.38s;"></div> <!-- H sağ alt aynı E alt -->
-                    <div class="dot on" style="animation-delay: 0.58s;"></div> <!-- E alt yatay -->
-                    <div class="dot on" style="animation-delay: 0.78s;"></div> <!-- X alt çapraz -->
-                    <div class="dot on" style="animation-delay: 0.98s;"></div> <!-- A alt uç -->
-                    <div class="dot on" style="animation-delay: 1.18s;"></div> <!-- G alt -->
-                    <div class="dot on" style="animation-delay: 1.38s;"></div> <!-- E alt -->
-                    <div class="dot on" style="animation-delay: 1.58s;"></div> <!-- S alt -->
-                </div>
-
-                <!-- yukarıdaki pattern biraz deneysel ama HEXAGES okunuyor : ek olarak "S" ve "ES" vurgusu için satırların bir kısmında daha fazla nokta -->
-                <!-- ayrıca forma Rize için bazı noktalar polygon vs -->
-            </div>
-
-            <!-- alt metin : S ES (logo içinde gizli ama orijinalde vurgu var) küçük bir katman ekleyelim -->
-            <div style="display: flex; gap: 2.5rem; justify-content: center; margin: 1rem 0 0.2rem 0; opacity: 0.7;">
-                <span style="color: #7bb8ff; font-weight: 300; letter-spacing: 10px; text-shadow: 0 0 10px #0af; font-size: 1.3rem; background: #0b1423; padding: 0.2rem 1.5rem; border-radius: 30px; border: 1px solid #2f6080;">S</span>
-                <span style="color: #aadaff; font-weight: 300; letter-spacing: 8px; text-shadow: 0 0 18px #1eb0ff; font-size: 1.3rem; background: #0b1423; padding: 0.2rem 1.5rem; border-radius: 30px; border: 1px solid #2f6080;">ES</span>
-            </div>
-            <!-- ince animasyon glowline -->
-            <div class="glowline"></div>
-
-            <!-- HEXAGES GAMES ana alt başlık (istediğiniz gibi) -->
-            <div class="brand-sub">HEXAGES GAMES</div>
-            <!-- en altta ekstra parıltı -->
-            <div style="margin-top: 0.5rem; font-size: 0.7rem; color: #1b4560; text-align: center; letter-spacing: 4px;">◈  DOT PHASER  ◈</div>
+      <div class="bars">
+        <div class="barCard">
+          <div class="barHead"><span>CAN</span><span id="healthText">160 / 160</span></div>
+          <div class="barTrack"><div class="barFill" id="healthBar"></div></div>
         </div>
+        <div class="barCard">
+          <div class="barHead"><span>ENERJİ</span><span id="energyText">120 / 120</span></div>
+          <div class="barTrack"><div class="barFill" id="energyBar"></div></div>
+        </div>
+        <div class="barCard">
+          <div class="barHead"><span>MERMİ</span><span id="ammoText">28 / 28</span></div>
+          <div class="barTrack"><div class="barFill" id="ammoBar"></div></div>
+        </div>
+        <div class="barCard">
+          <div class="barHead"><span>SEKTÖR İLERLEMESİ</span><span id="progressText">0 / 10</span></div>
+          <div class="barTrack"><div class="barFill" id="progressBar"></div></div>
+        </div>
+      </div>
+
+      <div id="bossWrap">
+        <div class="barHead"><span id="bossName">BOSS</span><span id="bossText">0 / 0</span></div>
+        <div class="barTrack"><div class="barFill" id="bossBar"></div></div>
+      </div>
+
+      <div id="sectionBanner">SEKTÖR 1</div>
+      <button id="musicBtn">Müzik: Açık</button>
+
+      <div class="bottomHelp">
+        <strong>Kontroller</strong><br>
+        Fare ile nişan al • Sol tık ateş et • WASD ile hareket et • Shift ile kısa hızlan • R yeniden doldur • P duraklat • Boşluk enerji darbesi • 1/2/3/4/5 silah değiştir • M müzik aç/kapat
+      </div>
+
+      <div class="rightInfo">
+        <strong>Yeni sistemler</strong><br>
+        Hareket eklendi, düşen <b>can / enerji / cephane kapsülleri</b> toplanabiliyor, silah sayısı arttı ve grafikler geliştirildi.<br><br>
+        Denge için <b>CONFIG</b>, zorluk için <b>DIFFICULTY_PRESETS</b>, silahlar için <b>WEAPONS</b> bölümünü düzenleyebilirsin.
+      </div>
     </div>
 
-    <!-- ekstra boşluk ve arka plan efektleri için interaktif animasyon (sürekli loop) -->
-    <style>
-        /* arkaplanda yavaş dönen neon halkalar */
-        .hex-stage::before {
-            content: '';
-            position: absolute;
-            top: -20px; left: -20px; right: -20px; bottom: -20px;
-            border: 2px solid rgba(0, 255, 255, 0.1);
-            border-radius: 5rem;
-            pointer-events: none;
-            animation: rotateGlow 14s linear infinite;
-            z-index: -1;
-            filter: blur(8px);
+    <div class="overlay" id="overlay">
+      <div class="card" id="overlayCard"></div>
+    </div>
+  </div>
+
+  <script>
+    const THEME = {
+      backgroundA: '#050816',
+      backgroundB: '#132b59',
+      star: 'rgba(255,255,255,0.92)',
+      tunnel: 'rgba(120, 220, 255, 0.08)',
+      player: '#d9f7ff',
+      laserA: '#8dffae',
+      laserB: '#51f3ff',
+      laserC: '#ffd966',
+      laserD: '#ff8fd0',
+      laserE: '#b39cff',
+      enemyA: '#ff5d7a',
+      enemyB: '#ffb05d',
+      enemyC: '#c58cff',
+      enemyShot: '#ff9db5',
+      bossShot: '#ffc46f',
+      nebulaA: 'rgba(81, 243, 255, 0.09)',
+      nebulaB: 'rgba(197, 140, 255, 0.08)'
+    };
+
+    const CONFIG = {
+      starCount: 140,
+      playerMaxHealth: 160,
+      playerMaxEnergy: 120,
+      energyRechargePerSec: 13,
+      playerSpeed: 360,
+      dashSpeed: 560,
+      enemyBaseSpeed: 0.0058,
+      enemySpawnMs: 1100,
+      enemyStartDepth: 1.30,
+      enemyMinDepthToDamage: 0.10,
+      enemyHitRadiusBase: 34,
+      sectionTargetBase: 9,
+      sectionTargetAdd: 4,
+      betweenSectionDelayMs: 1650,
+      specialPulseCost: 30,
+      specialPulseRadius: 215,
+      difficultyRamp: 0.000028,
+      scorePerKill: 10,
+      autoReloadOnEmpty: true,
+      bossEvery: 3,
+      bossBaseHp: 100,
+      bossHpPerSection: 18,
+      bossShotCooldown: 900,
+      pickupDropChance: 0.24,
+      pickupMagnetRadius: 95
+    };
+
+    const DIFFICULTY_PRESETS = {
+      easy: { label: 'Kolay', speedMul: 0.70, spawnMul: 1.35, damageMul: 0.72, scoreMul: 1, startDifficulty: 0.72 },
+      normal: { label: 'Normal', speedMul: 0.9, spawnMul: 1.08, damageMul: 0.92, scoreMul: 1, startDifficulty: 0.9 },
+      hard: { label: 'Zor', speedMul: 1.1, spawnMul: 0.92, damageMul: 1.16, scoreMul: 1.12, startDifficulty: 1.15 }
+    };
+
+    const WEAPONS = {
+      blaster: { key: '1', label: 'Pulse Blaster', color: THEME.laserA, maxAmmo: 28, reloadMs: 860, fireRateMs: 150, damage: 1, spread: 9, burstCount: 1, pelletCount: 1, energyBonus: 0, width: 3 },
+      rifle:   { key: '2', label: 'Burst Rifle', color: THEME.laserB, maxAmmo: 24, reloadMs: 1050, fireRateMs: 110, damage: 1, spread: 14, burstCount: 2, burstDelayMs: 55, pelletCount: 1, energyBonus: 0, width: 3 },
+      cannon:  { key: '3', label: 'Plasma Cannon', color: THEME.laserC, maxAmmo: 12, reloadMs: 1380, fireRateMs: 420, damage: 3, spread: 6, burstCount: 1, pelletCount: 1, energyBonus: 4, width: 5 },
+      scatter: { key: '4', label: 'Scatter Shot', color: THEME.laserD, maxAmmo: 16, reloadMs: 1180, fireRateMs: 330, damage: 1, spread: 48, burstCount: 1, pelletCount: 5, energyBonus: 0, width: 3 },
+      lance:   { key: '5', label: 'Ion Lance', color: THEME.laserE, maxAmmo: 10, reloadMs: 1450, fireRateMs: 480, damage: 4, spread: 4, burstCount: 1, pelletCount: 1, energyBonus: 6, width: 6 }
+    };
+
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('overlay');
+    const overlayCard = document.getElementById('overlayCard');
+    const leftStats = document.getElementById('leftStats');
+    const middleStats = document.getElementById('middleStats');
+    const rightStats = document.getElementById('rightStats');
+    const moveStats = document.getElementById('moveStats');
+    const sectionBanner = document.getElementById('sectionBanner');
+    const musicBtn = document.getElementById('musicBtn');
+    const healthBar = document.getElementById('healthBar');
+    const energyBar = document.getElementById('energyBar');
+    const ammoBar = document.getElementById('ammoBar');
+    const progressBar = document.getElementById('progressBar');
+    const healthText = document.getElementById('healthText');
+    const energyText = document.getElementById('energyText');
+    const ammoText = document.getElementById('ammoText');
+    const progressText = document.getElementById('progressText');
+    const bossWrap = document.getElementById('bossWrap');
+    const bossName = document.getElementById('bossName');
+    const bossBar = document.getElementById('bossBar');
+    const bossText = document.getElementById('bossText');
+
+    let w = 0, h = 0, cx = 0, cy = 0;
+    function resize() {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+      w = canvas.width;
+      h = canvas.height;
+      cx = w / 2;
+      cy = h / 2;
+    }
+    addEventListener('resize', resize);
+    resize();
+
+    const stars = [];
+    const shots = [];
+    const enemies = [];
+    const enemyShots = [];
+    const hitSparks = [];
+    const pickups = [];
+    const nebulae = [];
+
+    const keys = { w: false, a: false, s: false, d: false, shift: false };
+
+    const state = {
+      running: false,
+      paused: false,
+      gameOver: false,
+      inSectionBreak: false,
+      score: 0,
+      best: Number(localStorage.getItem('space_fps_lite_best') || 0),
+      health: CONFIG.playerMaxHealth,
+      energy: CONFIG.playerMaxEnergy,
+      ammo: WEAPONS.blaster.maxAmmo,
+      reloading: false,
+      lastFire: 0,
+      lastSpawn: 0,
+      elapsed: 0,
+      difficulty: 1,
+      selectedDifficulty: 'easy',
+      selectedWeapon: 'blaster',
+      pointerX: cx,
+      pointerY: cy,
+      shake: 0,
+      flash: 0,
+      section: 1,
+      sectionKills: 0,
+      sectionTarget: CONFIG.sectionTargetBase,
+      totalKills: 0,
+      boss: null,
+      musicOn: true,
+      musicTimer: null,
+      player: {
+        x: cx,
+        y: h - 105,
+        vx: 0,
+        vy: 0
+      }
+    };
+
+    let audioCtx = null;
+
+    function ensureAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function beep(freq, duration, type = 'sine', gainValue = 0.03, sweepTo = null) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, audioCtx.currentTime + duration);
+      gain.gain.setValueAtTime(gainValue, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function sfxShoot() { beep(520, 0.05, 'square', 0.022, 240); }
+    function sfxHit() { beep(220, 0.05, 'triangle', 0.015, 170); }
+    function sfxKill() { beep(180, 0.12, 'sawtooth', 0.026, 480); }
+    function sfxDamage() { beep(130, 0.16, 'square', 0.03, 90); }
+    function sfxReload() { beep(700, 0.06, 'triangle', 0.014, 950); }
+    function sfxSection() { beep(340, 0.12, 'triangle', 0.026, 720); }
+    function sfxStart() { beep(280, 0.08, 'sine', 0.02, 560); }
+    function sfxBoss() { beep(90, 0.34, 'sawtooth', 0.035, 150); }
+    function sfxPickup() { beep(660, 0.08, 'triangle', 0.018, 980); }
+
+    function startMusic() {
+      if (!state.musicOn || state.musicTimer) return;
+      let step = 0;
+      const bass = [110, 110, 82.41, 98, 110, 146.83, 130.81, 98];
+      const lead = [220, 0, 246.94, 261.63, 293.66, 261.63, 246.94, 220];
+      state.musicTimer = setInterval(() => {
+        if (!state.musicOn || !audioCtx || !state.running || state.paused || state.gameOver) return;
+        const b = bass[step % bass.length];
+        const l = lead[step % lead.length];
+        if (b) beep(b, 0.18, 'sine', 0.013, b * 1.02);
+        if (l) beep(l, 0.1, 'triangle', 0.007, l * 1.45);
+        step++;
+      }, 240);
+    }
+
+    function stopMusic() {
+      if (state.musicTimer) {
+        clearInterval(state.musicTimer);
+        state.musicTimer = null;
+      }
+    }
+
+    function toggleMusic() {
+      state.musicOn = !state.musicOn;
+      musicBtn.textContent = `Müzik: ${state.musicOn ? 'Açık' : 'Kapalı'}`;
+      if (state.musicOn) {
+        ensureAudio();
+        startMusic();
+      } else {
+        stopMusic();
+      }
+    }
+
+    function currentDifficulty() {
+      return DIFFICULTY_PRESETS[state.selectedDifficulty] || DIFFICULTY_PRESETS.easy;
+    }
+
+    function currentWeapon() {
+      return WEAPONS[state.selectedWeapon] || WEAPONS.blaster;
+    }
+
+    function isBossSection(section) {
+      return section % CONFIG.bossEvery === 0;
+    }
+
+    function playerCore() {
+      return { x: state.player.x, y: state.player.y };
+    }
+
+    function createStars() {
+      stars.length = 0;
+      for (let i = 0; i < CONFIG.starCount; i++) {
+        stars.push({ x: Math.random() * w, y: Math.random() * h, z: Math.random() + 0.2, size: Math.random() * 2 + 0.5 });
+      }
+    }
+
+    function createNebulae() {
+      nebulae.length = 0;
+      for (let i = 0; i < 5; i++) {
+        nebulae.push({
+          x: Math.random() * w,
+          y: Math.random() * h * 0.6,
+          r: 110 + Math.random() * 180,
+          color: i % 2 === 0 ? THEME.nebulaA : THEME.nebulaB
+        });
+      }
+    }
+
+    function setWeapon(key) {
+      if (!WEAPONS[key]) return;
+      const prev = currentWeapon();
+      const ratio = Math.max(0, state.ammo) / prev.maxAmmo;
+      state.selectedWeapon = key;
+      const next = currentWeapon();
+      state.ammo = Math.max(1, Math.round(next.maxAmmo * Math.max(0.35, ratio)));
+      state.reloading = false;
+      updateSelectionStyles();
+      updateHud();
+    }
+
+    function showBanner(text, duration = 1300) {
+      sectionBanner.textContent = text;
+      sectionBanner.style.opacity = '1';
+      setTimeout(() => { sectionBanner.style.opacity = '0'; }, duration);
+    }
+
+    function clearCombatEntities() {
+      enemies.length = 0;
+      enemyShots.length = 0;
+      shots.length = 0;
+      pickups.length = 0;
+      hitSparks.length = 0;
+      state.boss = null;
+      bossWrap.style.display = 'none';
+    }
+
+    function prepareSection() {
+      clearCombatEntities();
+      state.inSectionBreak = false;
+      state.sectionKills = 0;
+      state.sectionTarget = CONFIG.sectionTargetBase + (state.section - 1) * CONFIG.sectionTargetAdd;
+      if (isBossSection(state.section)) {
+        state.inSectionBreak = true;
+        showBanner(`SEKTÖR ${state.section} • BOSS YAKLAŞIYOR`, 1700);
+        setTimeout(() => {
+          if (!state.running || state.gameOver) return;
+          spawnBoss();
+          state.inSectionBreak = false;
+          sfxBoss();
+        }, 1100);
+      } else {
+        showBanner(`SEKTÖR ${state.section} BAŞLADI`);
+      }
+      updateHud();
+    }
+
+    function resetPlayerPosition() {
+      state.player.x = cx;
+      state.player.y = h - 105;
+      state.player.vx = 0;
+      state.player.vy = 0;
+      state.pointerX = cx;
+      state.pointerY = cy;
+    }
+
+    function resetGame() {
+      ensureAudio();
+      if (state.musicOn) startMusic();
+      sfxStart();
+      state.running = true;
+      state.paused = false;
+      state.gameOver = false;
+      state.score = 0;
+      state.health = CONFIG.playerMaxHealth;
+      state.energy = CONFIG.playerMaxEnergy;
+      state.reloading = false;
+      state.lastFire = 0;
+      state.lastSpawn = 0;
+      state.elapsed = 0;
+      state.difficulty = currentDifficulty().startDifficulty;
+      state.shake = 0;
+      state.flash = 0;
+      state.section = 1;
+      state.totalKills = 0;
+      state.ammo = currentWeapon().maxAmmo;
+      overlay.style.display = 'none';
+      resetPlayerPosition();
+      createStars();
+      createNebulae();
+      prepareSection();
+      updateSelectionStyles();
+      updateHud();
+    }
+
+    function spawnEnemy() {
+      const preset = currentDifficulty();
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.min(w, h) * (0.22 + Math.random() * 0.28);
+      const roll = Math.random();
+      const type = roll > 0.88 ? 'elite' : roll > 0.68 ? 'heavy' : 'normal';
+      enemies.push({
+        baseX: cx + Math.cos(angle) * radius,
+        baseY: cy + Math.sin(angle) * radius,
+        x: 0,
+        y: 0,
+        depth: CONFIG.enemyStartDepth,
+        speed: (CONFIG.enemyBaseSpeed + Math.random() * 0.0025 + state.difficulty * 0.0012) * preset.speedMul,
+        hp: type === 'elite' ? 4 : type === 'heavy' ? 2 : 1,
+        type,
+        wobble: Math.random() * Math.PI * 2,
+        alive: true,
+        nextShot: performance.now() + 900 + Math.random() * 800
+      });
+    }
+
+    function spawnBoss() {
+      const maxHp = CONFIG.bossBaseHp + state.section * CONFIG.bossHpPerSection;
+      state.boss = {
+        name: 'Omega Sentinel',
+        x: cx,
+        y: h * 0.24,
+        maxHp,
+        hp: maxHp,
+        angle: 0,
+        nextShot: performance.now() + 900,
+        alive: true
+      };
+      bossWrap.style.display = 'block';
+      updateHud();
+    }
+
+    function createSpark(x, y, count, color = '#ffffff') {
+      for (let i = 0; i < count; i++) {
+        hitSparks.push({
+          x, y,
+          vx: (Math.random() - 0.5) * 8,
+          vy: (Math.random() - 0.5) * 8,
+          life: 0.36 + Math.random() * 0.42,
+          size: 1 + Math.random() * 3,
+          color
+        });
+      }
+    }
+
+    function spawnPickup(x, y) {
+      if (Math.random() > CONFIG.pickupDropChance) return;
+      const roll = Math.random();
+      const type = roll < 0.44 ? 'health' : roll < 0.72 ? 'energy' : 'ammo';
+      pickups.push({
+        type,
+        x, y,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: 0.5 + Math.random() * 0.6,
+        life: 10,
+        wobble: Math.random() * Math.PI * 2,
+        size: type === 'health' ? 14 : 13
+      });
+    }
+
+    function getEnemyRadius(enemy) {
+      const scale = (1.35 - enemy.depth) * CONFIG.enemyHitRadiusBase;
+      const bonus = enemy.type === 'elite' ? 18 : enemy.type === 'heavy' ? 10 : 0;
+      return Math.max(18, scale + bonus);
+    }
+
+    function getBossRadius() {
+      return 96;
+    }
+
+    function spawnEnemyShot(x, y, damage, color = THEME.enemyShot, speed = 4.6, size = 5) {
+      const core = playerCore();
+      const dx = core.x - x;
+      const dy = core.y - y;
+      const len = Math.max(1, Math.hypot(dx, dy));
+      enemyShots.push({
+        x, y,
+        vx: dx / len * speed,
+        vy: dy / len * speed,
+        damage,
+        color,
+        size,
+        life: 3.4
+      });
+    }
+
+    function bossFirePattern() {
+      if (!state.boss || !state.boss.alive) return;
+      const enraged = state.boss.hp < state.boss.maxHp * 0.45;
+      const count = enraged ? 5 : 3;
+      const baseDamage = enraged ? 9 : 7;
+      for (let i = 0; i < count; i++) {
+        const spread = (i - (count - 1) / 2) * 34;
+        spawnEnemyShot(state.boss.x + spread, state.boss.y + 42, baseDamage, THEME.bossShot, enraged ? 6 : 5.5, enraged ? 7 : 6);
+      }
+      beep(170, 0.08, 'square', 0.018, 120);
+      state.boss.nextShot = performance.now() + CONFIG.bossShotCooldown * (enraged ? 0.82 : 1);
+    }
+
+    function hitBossAt(x, y, damage, color) {
+      if (!state.boss || !state.boss.alive) return false;
+      const distBoss = Math.hypot(x - state.boss.x, y - state.boss.y);
+      if (distBoss > getBossRadius()) return false;
+      state.boss.hp -= damage;
+      sfxHit();
+      createSpark(state.boss.x, state.boss.y, 10, color);
+      if (state.boss.hp <= 0) {
+        state.boss.alive = false;
+        state.score += Math.round(120 * currentDifficulty().scoreMul);
+        spawnPickup(state.boss.x, state.boss.y);
+        sfxKill();
+        createSpark(state.boss.x, state.boss.y, 40, '#ffffff');
+        nextSection();
+      }
+      return true;
+    }
+
+    function shootProjectile(targetX, targetY, damage, width, color) {
+      const core = playerCore();
+      shots.push({ x: targetX, y: targetY, sx: core.x, sy: core.y, life: 0.1, color, width });
+
+      if (hitBossAt(targetX, targetY, damage, color)) return;
+
+      let target = null;
+      let bestDepth = 999;
+      for (const enemy of enemies) {
+        if (!enemy.alive) continue;
+        const dist = Math.hypot(targetX - enemy.x, targetY - enemy.y);
+        if (dist <= getEnemyRadius(enemy) && enemy.depth < bestDepth) {
+          target = enemy;
+          bestDepth = enemy.depth;
         }
-        .hex-stage {
-            position: relative;
-            overflow: hidden;
+      }
+
+      if (target) {
+        target.hp -= damage;
+        sfxHit();
+        createSpark(target.x, target.y, 10, color);
+        if (target.hp <= 0) onEnemyKilled(target);
+      }
+    }
+
+    function onEnemyKilled(enemy) {
+      if (!enemy.alive) return;
+      enemy.alive = false;
+      const preset = currentDifficulty();
+      const base = enemy.type === 'elite' ? 30 : enemy.type === 'heavy' ? 18 : CONFIG.scorePerKill;
+      state.score += Math.round(base * preset.scoreMul);
+      state.sectionKills += 1;
+      state.totalKills += 1;
+      spawnPickup(enemy.x, enemy.y);
+      sfxKill();
+      createSpark(enemy.x, enemy.y, 24, '#ffffff');
+    }
+
+    function fire() {
+      if (!state.running || state.paused || state.gameOver || state.inSectionBreak || state.reloading) return;
+      const now = performance.now();
+      const weapon = currentWeapon();
+      if (now - state.lastFire < weapon.fireRateMs) return;
+      if (state.ammo <= 0) {
+        if (CONFIG.autoReloadOnEmpty) reload();
+        return;
+      }
+
+      state.lastFire = now;
+      state.ammo -= 1;
+      state.flash = 0.8;
+      sfxShoot();
+
+      const bursts = weapon.burstCount || 1;
+      for (let b = 0; b < bursts; b++) {
+        const delay = b * (weapon.burstDelayMs || 0);
+        setTimeout(() => {
+          if (!state.running || state.gameOver) return;
+          for (let p = 0; p < (weapon.pelletCount || 1); p++) {
+            const spreadX = (Math.random() - 0.5) * weapon.spread;
+            const spreadY = (Math.random() - 0.5) * weapon.spread;
+            shootProjectile(state.pointerX + spreadX, state.pointerY + spreadY, weapon.damage, weapon.width, weapon.color);
+          }
+        }, delay);
+      }
+      updateHud();
+    }
+
+    function reload() {
+      const weapon = currentWeapon();
+      if (!state.running || state.reloading || state.ammo === weapon.maxAmmo) return;
+      state.reloading = true;
+      sfxReload();
+      updateHud();
+      setTimeout(() => {
+        if (!state.running) return;
+        state.ammo = weapon.maxAmmo;
+        state.reloading = false;
+        updateHud();
+      }, weapon.reloadMs);
+    }
+
+    function pulse() {
+      if (!state.running || state.paused || state.gameOver) return;
+      if (state.energy < CONFIG.specialPulseCost) return;
+      state.energy -= CONFIG.specialPulseCost;
+      createSpark(state.pointerX, state.pointerY, 36, '#c9f9ff');
+      beep(105, 0.22, 'sawtooth', 0.03, 420);
+      for (const enemy of enemies) {
+        if (!enemy.alive) continue;
+        const dist = Math.hypot(enemy.x - state.pointerX, enemy.y - state.pointerY);
+        if (dist <= CONFIG.specialPulseRadius) {
+          enemy.hp -= 2;
+          if (enemy.hp <= 0) onEnemyKilled(enemy);
         }
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg) scale(1); border-color: rgba(0, 180, 255, 0.1); filter: blur(5px); }
-            50% { transform: rotate(3deg) scale(1.02); border-color: rgba(0, 255, 200, 0.3); filter: blur(10px); }
-            100% { transform: rotate(0deg) scale(1); border-color: rgba(0, 180, 255, 0.1); filter: blur(5px); }
+      }
+      if (state.boss && state.boss.alive) {
+        const distBoss = Math.hypot(state.boss.x - state.pointerX, state.boss.y - state.pointerY);
+        if (distBoss <= CONFIG.specialPulseRadius + 24) {
+          state.boss.hp -= 3;
+          createSpark(state.boss.x, state.boss.y, 12, '#c9f9ff');
+          if (state.boss.hp <= 0) {
+            state.boss.alive = false;
+            state.score += Math.round(120 * currentDifficulty().scoreMul);
+            nextSection();
+          }
+        }
+      }
+      updateHud();
+    }
+
+    function nextSection() {
+      if (state.inSectionBreak || state.gameOver) return;
+      state.inSectionBreak = true;
+      sfxSection();
+      state.health = Math.min(CONFIG.playerMaxHealth, state.health + 24);
+      state.energy = Math.min(CONFIG.playerMaxEnergy, state.energy + 36);
+      clearCombatEntities();
+      showBanner(`SEKTÖR ${state.section} TEMİZLENDİ`, 1500);
+      setTimeout(() => {
+        if (state.gameOver) return;
+        state.section += 1;
+        state.difficulty += 0.12;
+        prepareSection();
+      }, CONFIG.betweenSectionDelayMs);
+    }
+
+    function takeDamage(amount) {
+      state.health -= amount;
+      state.shake = 1;
+      state.flash = 1;
+      sfxDamage();
+      if (state.health <= 0) {
+        endGame();
+      }
+    }
+
+    function collectPickup(pickup) {
+      if (pickup.type === 'health') {
+        state.health = Math.min(CONFIG.playerMaxHealth, state.health + 24);
+      } else if (pickup.type === 'energy') {
+        state.energy = Math.min(CONFIG.playerMaxEnergy, state.energy + 32);
+      } else {
+        const weapon = currentWeapon();
+        state.ammo = Math.min(weapon.maxAmmo, state.ammo + Math.ceil(weapon.maxAmmo * 0.45));
+      }
+      sfxPickup();
+      createSpark(pickup.x, pickup.y, 14, pickup.type === 'health' ? '#ffb3b3' : pickup.type === 'energy' ? '#bff6ff' : '#ffe6a6');
+      pickup.life = 0;
+      updateHud();
+    }
+
+    function updatePlayer(dt) {
+      const player = state.player;
+      const speed = keys.shift ? CONFIG.dashSpeed : CONFIG.playerSpeed;
+      let mx = 0, my = 0;
+      if (keys.a) mx -= 1;
+      if (keys.d) mx += 1;
+      if (keys.w) my -= 1;
+      if (keys.s) my += 1;
+      const len = Math.hypot(mx, my) || 1;
+      mx /= len;
+      my /= len;
+
+      player.vx += (mx * speed - player.vx) * Math.min(1, dt * 10);
+      player.vy += (my * speed - player.vy) * Math.min(1, dt * 10);
+      player.x += player.vx * dt;
+      player.y += player.vy * dt;
+
+      const minX = w * 0.18;
+      const maxX = w * 0.82;
+      const minY = h * 0.66;
+      const maxY = h * 0.9;
+      player.x = Math.max(minX, Math.min(maxX, player.x));
+      player.y = Math.max(minY, Math.min(maxY, player.y));
+    }
+
+    function updateHud() {
+      const weapon = currentWeapon();
+      leftStats.innerHTML = `SKOR: ${state.score}<br>SEKTÖR: ${state.section}`;
+      middleStats.innerHTML = `SİLAH: ${weapon.label}<br>ZORLUK: ${currentDifficulty().label}`;
+      rightStats.innerHTML = `EN İYİ: ${state.best}<br>DÜŞMAN: ${enemies.filter(e => e.alive).length + (state.boss && state.boss.alive ? 1 : 0)}`;
+      moveStats.innerHTML = `HAREKET: WASD<br>${state.reloading ? 'YÜKLENİYOR' : 'HIZLAN: SHIFT'}`;
+
+      const hp = Math.max(0, state.health);
+      const en = Math.max(0, state.energy);
+      const ammo = Math.max(0, state.ammo);
+      const sectionTarget = isBossSection(state.section) ? 1 : Math.max(1, state.sectionTarget);
+      const sectionProgress = isBossSection(state.section)
+        ? (state.boss && state.boss.alive ? 0 : 1)
+        : Math.min(sectionTarget, state.sectionKills);
+
+      healthText.textContent = `${Math.round(hp)} / ${CONFIG.playerMaxHealth}`;
+      energyText.textContent = `${Math.round(en)} / ${CONFIG.playerMaxEnergy}`;
+      ammoText.textContent = `${ammo} / ${weapon.maxAmmo}`;
+      progressText.textContent = isBossSection(state.section)
+        ? `${state.boss && state.boss.alive ? 0 : 1} / 1`
+        : `${state.sectionKills} / ${state.sectionTarget}`;
+
+      healthBar.style.width = `${(hp / CONFIG.playerMaxHealth) * 100}%`;
+      energyBar.style.width = `${(en / CONFIG.playerMaxEnergy) * 100}%`;
+      ammoBar.style.width = `${(ammo / weapon.maxAmmo) * 100}%`;
+      progressBar.style.width = `${(sectionProgress / sectionTarget) * 100}%`;
+
+      if (state.boss && state.boss.alive) {
+        bossWrap.style.display = 'block';
+        bossName.textContent = state.boss.name;
+        bossText.textContent = `${Math.max(0, Math.round(state.boss.hp))} / ${state.boss.maxHp}`;
+        bossBar.style.width = `${Math.max(0, state.boss.hp) / state.boss.maxHp * 100}%`;
+      } else {
+        bossWrap.style.display = 'none';
+      }
+
+      musicBtn.textContent = `Müzik: ${state.musicOn ? 'Açık' : 'Kapalı'}`;
+    }
+
+    function updateSelectionStyles() {
+      document.querySelectorAll('.difficultyBtn').forEach(btn => btn.classList.toggle('selected', btn.dataset.difficulty === state.selectedDifficulty));
+      document.querySelectorAll('.weaponBtn').forEach(btn => btn.classList.toggle('selected', btn.dataset.weapon === state.selectedWeapon));
+      const diffEl = document.getElementById('difficultyText');
+      const weaponEl = document.getElementById('weaponText');
+      if (diffEl) diffEl.innerHTML = `Seçili zorluk: <strong>${currentDifficulty().label}</strong>`;
+      if (weaponEl) weaponEl.innerHTML = `Seçili silah: <strong>${currentWeapon().label}</strong>`;
+    }
+
+    function update(dt) {
+      if (!state.running || state.paused || state.gameOver) return;
+
+      state.elapsed += dt;
+      state.difficulty += CONFIG.difficultyRamp;
+      state.energy = Math.min(CONFIG.playerMaxEnergy, state.energy + (CONFIG.energyRechargePerSec + currentWeapon().energyBonus) * dt);
+      state.flash = Math.max(0, state.flash - dt * 5);
+      state.shake = Math.max(0, state.shake - dt * 10);
+
+      updatePlayer(dt);
+
+      const preset = currentDifficulty();
+      const now = performance.now();
+
+      if (!state.inSectionBreak && !state.boss && state.sectionKills < state.sectionTarget) {
+        const spawnGap = Math.max(360, (CONFIG.enemySpawnMs - state.difficulty * 110) * preset.spawnMul);
+        if (now - state.lastSpawn > spawnGap) {
+          spawnEnemy();
+          state.lastSpawn = now;
+        }
+      }
+
+      const shiftX = (state.player.x - cx) * 0.26;
+      const shiftY = (state.player.y - (h - 105)) * 0.20;
+
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const e = enemies[i];
+        if (!e.alive) {
+          enemies.splice(i, 1);
+          continue;
         }
 
-        /* noktaların olmayanlarına da hafif görünürlük */
-        .dot.off {
-            background: #06131f;
-            box-shadow: 0 0 0 0.5px #1b4b66, 0 0 5px #003344;
-            opacity: 0.5;
-            transform: scale(0.85);
-            animation: none;
+        e.depth -= e.speed;
+        e.wobble += dt * (e.type === 'elite' ? 4.2 : 3.1);
+        const perspective = 1 / Math.max(0.08, e.depth);
+        e.x = cx + (e.baseX - cx - shiftX) * perspective * 0.55 + Math.cos(e.wobble) * (e.type === 'elite' ? 20 : 14);
+        e.y = cy + (e.baseY - cy - shiftY) * perspective * 0.55 + Math.sin(e.wobble * 1.2) * (e.type === 'elite' ? 15 : 10);
+
+        if (e.depth <= CONFIG.enemyMinDepthToDamage) {
+          const baseDamage = e.type === 'elite' ? 20 : e.type === 'heavy' ? 12 : 8;
+          createSpark(e.x, e.y, 18, '#ffbbbb');
+          enemies.splice(i, 1);
+          takeDamage(baseDamage * preset.damageMul);
+          if (state.gameOver) return;
+          continue;
         }
-        /* tüm noktalar hafif altıgen dokusu için */
-        .dot {
-            transition: all 0.3s ease;
+
+        if (now > e.nextShot && e.depth < 0.95) {
+          const damage = e.type === 'elite' ? 8 : e.type === 'heavy' ? 7 : 5;
+          spawnEnemyShot(e.x, e.y, damage * preset.damageMul, THEME.enemyShot, e.type === 'elite' ? 5.2 : 4.6, e.type === 'elite' ? 6 : 5);
+          e.nextShot = now + (e.type === 'elite' ? 850 : 1150) + Math.random() * 700;
         }
-        .dot.on:hover {
-            transform: scale(1.5) translateY(-4px);
-            background: #fff;
-            box-shadow: 0 0 30px cyan, 0 0 70px #0044ff;
-            z-index: 10;
+      }
+
+      if (state.boss && state.boss.alive) {
+        state.boss.angle += dt * 1.25;
+        state.boss.x = cx + Math.sin(state.boss.angle) * Math.min(180, w * 0.18) - shiftX * 0.18;
+        state.boss.y = h * 0.23 + Math.cos(state.boss.angle * 1.4) * 20 - shiftY * 0.10;
+        if (now > state.boss.nextShot) bossFirePattern();
+      }
+
+      for (let i = enemyShots.length - 1; i >= 0; i--) {
+        const s = enemyShots[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life -= dt;
+        const core = playerCore();
+        if (Math.hypot(s.x - core.x, s.y - core.y) <= 30 || s.y > h - 50 || s.life <= 0) {
+          if (s.life > 0) {
+            createSpark(s.x, s.y, 10, s.color);
+            takeDamage(s.damage);
+            if (state.gameOver) return;
+          }
+          enemyShots.splice(i, 1);
         }
-        /* satırlara yatay kayma animu */
-        .hex-row {
-            animation: rowSlide 6s infinite alternate ease-in-out;
+      }
+
+      for (let i = pickups.length - 1; i >= 0; i--) {
+        const p = pickups[i];
+        p.life -= dt;
+        p.wobble += dt * 4;
+        const core = playerCore();
+        const dx = core.x - p.x;
+        const dy = core.y - p.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < CONFIG.pickupMagnetRadius) {
+          p.x += dx * dt * 4.8;
+          p.y += dy * dt * 4.8;
+        } else {
+          p.x += p.vx + Math.cos(p.wobble) * 0.35;
+          p.y += p.vy + Math.sin(p.wobble) * 0.35;
         }
-        @keyframes rowSlide {
-            0% { transform: translateX(-3px); }
-            100% { transform: translateX(3px); }
+
+        if (dist <= 26) {
+          collectPickup(p);
+          pickups.splice(i, 1);
+          continue;
         }
-        /* her satır farklı hızda kaysın */
-        .hex-row:nth-child(1) { animation-duration: 5.2s; }
-        .hex-row:nth-child(2) { animation-duration: 4.4s; }
-        .hex-row:nth-child(3) { animation-duration: 6.6s; }
-        .hex-row:nth-child(4) { animation-duration: 5.0s; }
-        .hex-row:nth-child(5) { animation-duration: 5.8s; }
-    </style>
-</body>
-</html>
+
+        if (p.life <= 0 || p.y > h + 40) pickups.splice(i, 1);
+      }
+
+      if (!isBossSection(state.section) && state.sectionKills >= state.sectionTarget && enemies.filter(e => e.alive).length === 0) {
+        nextSection();
+      }
+
+      updateHud();
+    }
+
+    function drawBackground(dt) {
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, THEME.backgroundB);
+      grad.addColorStop(1, THEME.backgroundA);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      for (const n of nebulae) {
+        const g = ctx.createRadialGradient(n.x, n.y, 10, n.x, n.y, n.r);
+        g.addColorStop(0, n.color);
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = 'rgba(155, 180, 255, 0.18)';
+      ctx.beginPath();
+      ctx.arc(w * 0.82, h * 0.18, Math.min(w, h) * 0.12, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (const s of stars) {
+        s.y += (10 + s.z * 60) * dt * 0.06;
+        if (s.y > h + 5) {
+          s.y = -5;
+          s.x = Math.random() * w;
+        }
+        ctx.globalAlpha = 0.35 + s.z * 0.6;
+        ctx.fillStyle = THEME.star;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * s.z, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      ctx.strokeStyle = THEME.tunnel;
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 6; i++) {
+        const r = (i + 1) * Math.min(w, h) * 0.11 + (state.elapsed * 0.09 % 1) * 84;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, r * 1.24, r * 0.72, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = 'rgba(81,243,255,0.08)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 7; i++) {
+        const y = h * 0.58 + i * 40;
+        ctx.beginPath();
+        ctx.moveTo(w * 0.18 - i * 22, y);
+        ctx.lineTo(w * 0.82 + i * 22, y);
+        ctx.stroke();
+      }
+    }
+
+    function drawCockpit() {
+      const gradient = ctx.createLinearGradient(0, h, 0, h - 220);
+      gradient.addColorStop(0, 'rgba(0,0,0,0.84)');
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, h - 230, w, 230);
+
+      const core = playerCore();
+
+      ctx.strokeStyle = 'rgba(159,231,255,0.24)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.15, h);
+      ctx.lineTo(w * 0.29, h * 0.78);
+      ctx.lineTo(w * 0.71, h * 0.78);
+      ctx.lineTo(w * 0.85, h);
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(159,231,255,0.06)';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.15, h);
+      ctx.lineTo(w * 0.29, h * 0.78);
+      ctx.lineTo(w * 0.71, h * 0.78);
+      ctx.lineTo(w * 0.85, h);
+      ctx.closePath();
+      ctx.fill();
+
+      const weapon = currentWeapon();
+      ctx.strokeStyle = weapon.color;
+      ctx.fillStyle = weapon.color + '18';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(core.x - 24, h);
+      ctx.lineTo(core.x - 12, h - 64);
+      ctx.lineTo(core.x + 12, h - 64);
+      ctx.lineTo(core.x + 24, h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(81,243,255,0.4)';
+      ctx.beginPath();
+      ctx.arc(core.x, core.y, 22, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(81,243,255,0.15)';
+      ctx.beginPath();
+      ctx.arc(core.x, core.y, 8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawEnemy(enemy) {
+      const r = getEnemyRadius(enemy);
+      const color = enemy.type === 'elite' ? THEME.enemyC : enemy.type === 'heavy' ? THEME.enemyB : THEME.enemyA;
+      ctx.save();
+      ctx.translate(enemy.x, enemy.y);
+
+      const glow = ctx.createRadialGradient(0, 0, 4, 0, 0, r * 1.3);
+      glow.addColorStop(0, color + '55');
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 1.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color + '22';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(-r * 1.2, 0);
+      ctx.lineTo(-r * 0.35, -r * 0.22);
+      ctx.lineTo(-r * 0.35, r * 0.22);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(r * 1.2, 0);
+      ctx.lineTo(r * 0.35, -r * 0.22);
+      ctx.lineTo(r * 0.35, r * 0.22);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(0, 0, Math.max(4, r * 0.18), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawBoss() {
+      if (!state.boss || !state.boss.alive) return;
+      const b = state.boss;
+      const r = getBossRadius();
+      ctx.save();
+      ctx.translate(b.x, b.y);
+
+      const glow = ctx.createRadialGradient(0, 0, 12, 0, 0, r * 1.6);
+      glow.addColorStop(0, 'rgba(255,176,93,0.25)');
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = THEME.enemyB;
+      ctx.fillStyle = 'rgba(255,176,93,0.14)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, r, r * 0.72, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(-r * 1.15, 0);
+      ctx.lineTo(-r * 0.30, -r * 0.28);
+      ctx.lineTo(-r * 0.15, 0);
+      ctx.lineTo(-r * 0.30, r * 0.28);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(r * 1.15, 0);
+      ctx.lineTo(r * 0.30, -r * 0.28);
+      ctx.lineTo(r * 0.15, 0);
+      ctx.lineTo(r * 0.30, r * 0.28);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.strokeStyle = '#fff1a6';
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.42, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawEnemyShots() {
+      for (const s of enemyShots) {
+        const g = ctx.createRadialGradient(s.x, s.y, 2, s.x, s.y, s.size * 2.6);
+        g.addColorStop(0, s.color);
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * 2.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawPickups() {
+      for (const p of pickups) {
+        const color = p.type === 'health' ? '#ff9090' : p.type === 'energy' ? '#8feeff' : '#ffd880';
+        const g = ctx.createRadialGradient(p.x, p.y, 2, p.x, p.y, p.size * 2.6);
+        g.addColorStop(0, color + 'cc');
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const a = (Math.PI * 2 / 6) * i + p.wobble * 0.3;
+          const px = p.x + Math.cos(a) * p.size;
+          const py = p.y + Math.sin(a) * p.size;
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+    }
+
+    function drawShots(dt) {
+      for (let i = shots.length - 1; i >= 0; i--) {
+        const shot = shots[i];
+        shot.life -= dt;
+        if (shot.life <= 0) {
+          shots.splice(i, 1);
+          continue;
+        }
+        ctx.strokeStyle = shot.color;
+        ctx.lineWidth = shot.width || 3;
+        ctx.globalAlpha = shot.life / 0.1;
+        ctx.beginPath();
+        ctx.moveTo(shot.sx, shot.sy);
+        ctx.lineTo(shot.x, shot.y);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function drawSparks(dt) {
+      for (let i = hitSparks.length - 1; i >= 0; i--) {
+        const p = hitSparks[i];
+        p.life -= dt;
+        if (p.life <= 0) {
+          hitSparks.splice(i, 1);
+          continue;
+        }
+        p.x += p.vx;
+        p.y += p.vy;
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color || '#fff';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function drawCrosshair() {
+      const x = state.pointerX;
+      const y = state.pointerY;
+      const s = 16;
+      ctx.strokeStyle = THEME.player;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x - s, y); ctx.lineTo(x - 5, y);
+      ctx.moveTo(x + 5, y); ctx.lineTo(x + s, y);
+      ctx.moveTo(x, y - s); ctx.lineTo(x, y - 5);
+      ctx.moveTo(x, y + 5); ctx.lineTo(x, y + s);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    function renderMenu() {
+      overlayCard.innerHTML = `
+        <h1>SPACE FPS LITE+</h1>
+        <p class="subtitle">Hareket, daha güçlü silahlar, sağlık kapsülleri ve geliştirilmiş grafiklerle güncellenmiş uzay nişancı prototipi.</p>
+        <div class="grid2">
+          <div class="box">
+            <h3>Zorluk</h3>
+            <div class="buttonRow">
+              <button class="pickBtn difficultyBtn" data-difficulty="easy">Kolay</button>
+              <button class="pickBtn difficultyBtn" data-difficulty="normal">Normal</button>
+              <button class="pickBtn difficultyBtn" data-difficulty="hard">Zor</button>
+            </div>
+            <p class="statusLine" id="difficultyText">Seçili zorluk: <strong>${currentDifficulty().label}</strong></p>
+            <p class="small">Kolay mod ilk test için önerilir. Oyunda hareket ederek mermilerden kaçabilirsin.</p>
+          </div>
+          <div class="box">
+            <h3>Silah</h3>
+            <div class="buttonRow">
+              <button class="pickBtn weaponBtn" data-weapon="blaster">1 • Blaster</button>
+              <button class="pickBtn weaponBtn" data-weapon="rifle">2 • Rifle</button>
+              <button class="pickBtn weaponBtn" data-weapon="cannon">3 • Cannon</button>
+              <button class="pickBtn weaponBtn" data-weapon="scatter">4 • Scatter</button>
+              <button class="pickBtn weaponBtn" data-weapon="lance">5 • Lance</button>
+            </div>
+            <p class="statusLine" id="weaponText">Seçili silah: <strong>${currentWeapon().label}</strong></p>
+            <p class="small">Scatter yakın alanda, Ion Lance ise boss hasarında güçlüdür. Düşen sarı kapsüller cephane verir.</p>
+          </div>
+        </div>
+        <div class="buttonRow" style="margin-top:16px;">
+          <button class="primary" id="startBtn">Oyunu Başlat</button>
+          <button class="secondary" id="musicToggleBtn">Müziği ${state.musicOn ? 'Kapat' : 'Aç'}</button>
+        </div>
+      `;
+      overlay.style.display = 'flex';
+      bindMenuButtons();
+      updateSelectionStyles();
+    }
+
+    function renderPause() {
+      overlayCard.innerHTML = `
+        <h1>DURAKLATILDI</h1>
+        <p class="subtitle">Devam etmek için butona tıkla ya da tekrar P tuşuna bas.</p>
+        <div class="buttonRow">
+          <button class="primary" id="resumeBtn">Devam Et</button>
+          <button class="secondary" id="menuBtn">Ana Menü</button>
+        </div>
+      `;
+      overlay.style.display = 'flex';
+      document.getElementById('resumeBtn').onclick = () => {
+        state.paused = false;
+        overlay.style.display = 'none';
+      };
+      document.getElementById('menuBtn').onclick = () => {
+        state.running = false;
+        state.paused = false;
+        clearCombatEntities();
+        renderMenu();
+      };
+    }
+
+    function endGame() {
+      state.gameOver = true;
+      state.running = false;
+      state.best = Math.max(state.best, state.score);
+      localStorage.setItem('space_fps_lite_best', String(state.best));
+      overlayCard.innerHTML = `
+        <h1>OYUN BİTTİ</h1>
+        <p class="subtitle">Skorun <strong>${state.score}</strong> • En iyi skorun <strong>${state.best}</strong> • Ulaştığın sektör <strong>${state.section}</strong></p>
+        <div class="buttonRow" style="margin-top:12px;">
+          <button class="primary" id="restartBtn">Tekrar Başlat</button>
+          <button class="secondary" id="backMenuBtn">Ana Menü</button>
+        </div>
+        <p class="small" style="margin-top:14px;">Kırmızı kapsüller can, mavi kapsüller enerji ve sarı kapsüller cephane verir.</p>
+      `;
+      overlay.style.display = 'flex';
+      document.getElementById('restartBtn').onclick = resetGame;
+      document.getElementById('backMenuBtn').onclick = () => {
+        clearCombatEntities();
+        renderMenu();
+      };
+      updateHud();
+    }
+
+    function bindMenuButtons() {
+      document.querySelectorAll('.difficultyBtn').forEach(btn => {
+        btn.onclick = () => {
+          state.selectedDifficulty = btn.dataset.difficulty;
+          updateSele... (4 KB kaldı)
+space_fps_lite_prototype.html
+54 KB
